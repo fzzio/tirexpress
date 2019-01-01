@@ -1,0 +1,36 @@
+{
+	"description": "Proyecto de Base de Datos para Tirexpress",
+	"name": "Tirexpress",
+	"type": "project",
+	"require": {
+		"php": ">=5.3.7",
+		"guzzlehttp/guzzle": "^6.3@dev",
+		"mailgun/mailgun-php": "dev-master",
+		"php-http/guzzle6-adapter": "^1.1",
+		"php-http/message": "^1.6@dev"
+	},
+	"authors": [
+        {
+            "name": "Félix Chávez",
+			"email": "ferichav@espol.edu.ec"
+		},
+		{
+            "name": "Emily Alcivar",
+            "email": "emiaalci@espol.edu.ec"
+        }
+	],
+	"repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/fzzio/tirexpress"
+        }
+    ],
+	"minimum-stability": "dev",
+	"suggest": {
+		"paragonie/random_compat": "Provides better randomness in PHP 5.x"
+	},
+	"require-dev": {
+		"mikey179/vfsStream": "1.1.*",
+		"phpunit/phpunit": "4.* || 5.* || 7.*"
+	}
+}
