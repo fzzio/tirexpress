@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 22-01-2019 a las 18:15:06
+-- Tiempo de generación: 22-01-2019 a las 22:00:18
 -- Versión del servidor: 10.1.31-MariaDB
 -- Versión de PHP: 5.6.35
 
@@ -336,18 +336,19 @@ CREATE TABLE `tb_empresas` (
   `direccion` varchar(100) NOT NULL,
   `ruc` varchar(15) NOT NULL,
   `telefono` varchar(25) DEFAULT NULL,
-  `logo` varchar(80) DEFAULT NULL
+  `logo` varchar(80) DEFAULT NULL,
+  `estado` varchar(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `tb_empresas`
 --
 
-INSERT INTO `tb_empresas` (`id_empresa`, `razon_social`, `direccion`, `ruc`, `telefono`, `logo`) VALUES
-(2, 'LLANTAX S.A', 'ALBORADA 12 ETAPA', '0988888888888', '097502707', 'SIN LOGO2'),
-(3, 'BOTIGELI', 'ALBORADA 12 ETAPA', '0977777777777', '097502707', 'SIN LOGO 3 -123'),
-(6, 'BOTIGELI', 'ALBORADA 12 ETAPA', '0977777777777', '097502707', 'SIN LOGO'),
-(7, 'BOTIGELI', 'ALBORADA 12 ETAPA', '0977777777777', '097502707', 'SIN LOGO');
+INSERT INTO `tb_empresas` (`id_empresa`, `razon_social`, `direccion`, `ruc`, `telefono`, `logo`, `estado`) VALUES
+(2, 'LLANTAX S.A', 'ALBORADA 12 ETAPA', '0988888888888', '097502707', 'SIN LOGO2', ''),
+(3, 'BOTIGELI', 'ALBORADA 12 ETAPA', '0977777777777', '097502707', 'SIN LOGO 3 -123', ''),
+(6, 'BOTIGELI', 'ALBORADA 12 ETAPA', '0977777777777', '097502707', 'SIN LOGO', ''),
+(7, 'BOTIGELI', 'ALBORADA 12 ETAPA', '0977777777777', '097502707', 'SIN LOGO', '');
 
 -- --------------------------------------------------------
 
@@ -475,6 +476,7 @@ INSERT INTO `tb_tabla_descto` (`id_descuento`, `rango_desde`, `rango_hasta`, `po
 
 CREATE TABLE `tb_user` (
   `id_user` int(11) NOT NULL,
+  `user` varchar(50) DEFAULT NULL,
   `email` varchar(100) NOT NULL,
   `password` varchar(40) NOT NULL,
   `full_name` varchar(100) NOT NULL,
@@ -485,9 +487,9 @@ CREATE TABLE `tb_user` (
 -- Volcado de datos para la tabla `tb_user`
 --
 
-INSERT INTO `tb_user` (`id_user`, `email`, `password`, `full_name`, `status`) VALUES
-(1, 'ferichav@espol.edu.ec', 'd180be1466aaf5547c5d712aa1a94190', 'Félix Chávez', 1),
-(2, 'emiaalci@espol.edu.ec', '50f6d9e888efc719335676aba05fc0fa', 'Emily Alcivar', 1);
+INSERT INTO `tb_user` (`id_user`, `user`, `email`, `password`, `full_name`, `status`) VALUES
+(1, 'ferichav', 'ferichav@espol.edu.ec', 'd180be1466aaf5547c5d712aa1a94190', 'Félix Chávez', 1),
+(2, 'emiaalci', 'emiaalci@espol.edu.ec', '50f6d9e888efc719335676aba05fc0fa', 'Emily Alcivar', 1);
 
 -- --------------------------------------------------------
 

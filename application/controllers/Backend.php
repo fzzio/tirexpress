@@ -99,39 +99,35 @@ class Backend extends CI_Controller {
     //////////////////////////////////////////////////////////////
     // Mantenimientos
     //////////////////////////////////////////////////////////////
-    public function usuario(){
+    public function categorias(){
         $debug = false;
 
         if ($this->securityCheck()) {
-            $titulo = "Auth";
+            $titulo = "Categoría";
             
             $crud = new grocery_CRUD();
-            $crud->set_table("auth");
+            $crud->set_table("tb_categorias");
             $crud->set_subject( $titulo );
 
-            $crud->display_as( 'email' , 'Email' );
-            $crud->display_as( 'user' , 'Nombre de usuario' );
-            $crud->display_as( 'password' , 'Contraseña' );
-            $crud->display_as( 'fecha_registro' , 'Registro' );
-            $crud->display_as( 'id_rol' , 'Rol' );
+            $crud->display_as( 'descripcion' , 'Descripción' );
+            $crud->display_as( 'id_empresa' , 'Empresa' );
+            $crud->display_as( 'usr_ingreso' , 'Usuario Ingreso' );
+            $crud->display_as( 'fec_ingreso' , 'Fecha Ingreso' );
             $crud->display_as( 'estado' , 'Estado' );
 
-            $crud->set_relation('id_rol', 'rol', 'nombre');            
+            $crud->set_relation('id_empresa', 'tb_empresas', 'razon_social');
             $crud->field_type('estado', 'dropdown', array(
-                '0' => 'Inactivo',
-                '1' => 'Activo',
+                'I' => 'Inactivo',
+                'A' => 'Activo',
             ));
 
-            $crud->change_field_type('password','password');
-
-            $crud->callback_before_insert(array($this,'encrypt_pw'));
-            $crud->callback_before_update(array($this,'encrypt_pw'));
-
-            $crud->columns( 'email', 'user', 'fecha_registro', 'id_rol', 'estado' );
-            $crud->fields( 'email', 'user', 'password', 'fecha_registro', 'id_rol', 'estado' );
-            $crud->required_fields( 'email', 'user', 'id_rol', 'estado' );
+            $crud->columns( 'descripcion', 'usr_ingreso', 'fec_ingreso', 'id_empresa', 'estado' );
+            $crud->fields( 'descripcion', 'usr_ingreso', 'fec_ingreso', 'id_empresa', 'estado' );
+            $crud->required_fields( 'descripcion', 'estado' );
 
             $crud->unset_export();
+            $crud->unset_clone();
+            $crud->unset_read();
             $crud->unset_print();
 
             $output = $crud->render();
@@ -151,53 +147,35 @@ class Backend extends CI_Controller {
         }
     }
 
-    public function encuesta(){
+    public function ciudades(){
         $debug = false;
 
         if ($this->securityCheck()) {
-            $titulo = "Encuesta";
+            $titulo = "Ciudad";
             
             $crud = new grocery_CRUD();
-            $crud->set_table("encuesta");
+            $crud->set_table("tb_ciudades");
             $crud->set_subject( $titulo );
 
-            $crud->display_as( 'id_usuario' , 'Email' );
-            $crud->display_as( 'id_auth' , 'User' );
-            // $crud->display_as( 'num_encuesta' , '# Encuesta' );
-            $crud->display_as( 'direccion' , 'Dirección' );
-            //$crud->display_as( 'parroquia' , 'Parroquia' );
-            $crud->display_as( 'vivienda' , 'Vivienda' );
-            $crud->display_as( 'laboral' , 'Situación laboral' );
-            $crud->display_as( 'quiere_casa' , '¿Quiere casa propia?' );
+            $crud->display_as( 'nombre' , 'nombre' );
+            $crud->display_as( 'usr_ingreso' , 'Usuario Ingreso' );
+            $crud->display_as( 'fec_ingreso' , 'Fecha Ingreso' );
+            $crud->display_as( 'iniciales' , 'Iniciales' );
             $crud->display_as( 'estado' , 'Estado' );
 
             $crud->field_type('estado', 'dropdown', array(
-                '0' => 'Inactivo',
-                '1' => 'Activo',
+                'I' => 'Inactivo',
+                'A' => 'Activo',
             ));
 
-            $crud->field_type('quiere_casa', 'dropdown', array(
-                '0' => 'No',
-                '1' => 'Sí',
-            ));
+            $crud->columns( 'nombre', 'iniciales', 'usr_ingreso', 'fec_ingreso', 'estado' );
+            $crud->fields( 'nombre', 'iniciales', 'usr_ingreso', 'fec_ingreso', 'estado' );
+            $crud->required_fields( 'nombre', 'iniciales', 'usr_ingreso', 'fec_ingreso', 'estado' );
 
-            $crud->set_relation('id_auth', 'auth', 'user');
-            $crud->set_relation('id_usuario', 'usuarios', 'email');
-
-            $crud->columns( 'id_usuario', 'id_auth'/*, 'num_encuesta'*/, 'direccion', /*'parroquia',*/ 'vivienda', 'laboral', 'quiere_casa', 'estado' );
-            $crud->fields( 'id_usuario', 'id_auth'/*, 'num_encuesta'*/, 'direccion', /*'parroquia',*/ 'vivienda', 'laboral', 'quiere_casa', 'estado' );
-            $crud->required_fields( 'id_usuario', 'id_auth'/*, 'num_encuesta'*/, 'direccion', /*'parroquia',*/ 'vivienda', 'laboral', 'quiere_casa', 'estado' );
-
-            $state = $crud->getState();
-            if($state == 'edit'){
-                $crud->field_type('id_usuario', 'readonly');
-                $crud->field_type('id_auth', 'readonly');
-            }
-
-            //$crud->unset_export();
-            $crud->unset_print();
+            $crud->unset_export();
             $crud->unset_clone();
             $crud->unset_read();
+            $crud->unset_print();
 
             $output = $crud->render();
 
@@ -215,62 +193,46 @@ class Backend extends CI_Controller {
             redirect("backend/logout");
         }
     }
-    public function listado_encuestados(){
+
+    public function clientes(){
         $debug = false;
 
         if ($this->securityCheck()) {
-            $titulo = "Encuestados";
+            $titulo = "Cliente";
             
             $crud = new grocery_CRUD();
-            $crud->set_table("usuarios");
+            $crud->set_table("tb_clientes");
             $crud->set_subject( $titulo );
 
-            $crud->display_as( 'id_usuario' , 'Usuario' );
-           
-
-            $crud->display_as( 'primer_nombre' , 'Primer nombre' );
-            $crud->display_as( 'segundo_nombre' , 'Segundo nombre' );
-            $crud->display_as( 'primer_apellido' , 'Primer apellido' );
-            $crud->display_as( 'segundo_apellido' , 'Segundo apellido' );
-            $crud->display_as( 'cedula' , 'C.I' );
-            $crud->display_as( 'sector' , 'Sector' );
-            $crud->display_as( 'sector_vota' , 'Padron electoral' );
-            $crud->display_as( 'email' , 'e-mail' );
-            // $crud->display_as( 'telefono' , 'Telefono' );
-            $crud->display_as( 'celular' , 'Movil' );
-            $crud->display_as( 'fecha_nacimiento' , 'Rango edad' );
-            $crud->display_as( 'sexo' , 'Sexo' );
-            $crud->display_as( 'direccion' , 'Direccion' );
+            $crud->display_as( 'id_empresa' , 'Empresa' );
+            $crud->display_as( 'razon_social' , 'Razón Social' );
+            $crud->display_as( 'direccion' , 'Dirección' );
+            $crud->display_as( 'telefono' , 'Teléfono' );
+            $crud->display_as( 'ruc' , 'RUC' );
+            $crud->display_as( 'id_ciudad' , 'Ciudad' );
+            $crud->display_as( 'cupo_credito' , 'Cupo $' );
+            $crud->display_as( 'id_vendedor' , 'Vendedor' );
+            $crud->display_as( 'usr_ingreso' , 'Usuario Ingreso' );
+            $crud->display_as( 'fec_ingreso' , 'Fecha Ingreso' );
             $crud->display_as( 'estado' , 'Estado' );
 
             $crud->field_type('estado', 'dropdown', array(
-                '0' => 'Inactivo',
-                '1' => 'Activo',
+                'I' => 'Inactivo',
+                'A' => 'Activo',
             ));
 
-            $crud->field_type('sector', 'dropdown', array(
-                '1' => 'Norte',
-                '2' => 'Centro',
-                '3' => 'Sur',
-            ));
+            $crud->set_relation('id_empresa', 'tb_empresas', 'razon_social');
+            $crud->set_relation('id_ciudad', 'tb_ciudades', 'nombre');
+            $crud->set_relation('id_vendedor', 'tb_vendedores', 'nombres');
 
-            $crud->set_relation('id_usuario', 'auth', 'user');
+            $crud->columns( 'id_empresa', 'razon_social', 'direccion', 'telefono', 'ruc', 'id_ciudad', 'cupo_credito', 'id_vendedor', 'usr_ingreso', 'fec_ingreso', 'estado' );
+            $crud->fields( 'id_empresa', 'razon_social', 'direccion', 'telefono', 'ruc', 'id_ciudad', 'cupo_credito', 'id_vendedor', 'usr_ingreso', 'fec_ingreso', 'estado' );
+            $crud->required_fields( 'id_empresa', 'razon_social', 'direccion', 'ruc', 'estado' );
 
-            $crud->columns('id_usuario', 'cedula', 'primer_nombre', 'segundo_nombre', 'primer_apellido', 'segundo_apellido', 'sector_vota', 'email'/*, 'telefono'*/, 'celular', 'fecha_nacimiento', 'sexo', 'direccion' , 'estado' );
-            $crud->fields( 'id_usuario', 'cedula', 'primer_nombre', 'segundo_nombre', 'primer_apellido', 'segundo_apellido', 'sector_vota', 'email'/*, 'telefono'*/, 'celular', 'fecha_nacimiento', 'sexo', 'direccion' , 'estado' );
-            
-            // $crud->required_fields( 'id_usuario',  'estado' );
-            $crud->required_fields( 'id_usuario', 'cedula', 'primer_nombre', 'segundo_nombre', 'primer_apellido', 'segundo_apellido', 'sector_vota', 'email'/*, 'telefono'*/, 'celular', 'fecha_nacimiento', 'sexo', 'direccion' , 'estado' );
-
-            $state = $crud->getState();
-            if($state == 'edit'){
-                $crud->field_type('id_usuario', 'readonly');
-            }
-
-            //$crud->unset_export();
-            $crud->unset_print();
+            $crud->unset_export();
             $crud->unset_clone();
             $crud->unset_read();
+            $crud->unset_print();
 
             $output = $crud->render();
 
@@ -289,41 +251,38 @@ class Backend extends CI_Controller {
         }
     }
 
-    public function total_encuestas(){
+    public function empresas(){
+        $debug = false;
+
         if ($this->securityCheck()) {
-            $titulo = "Encuestados";
+            $titulo = "Empresa";
             
             $crud = new grocery_CRUD();
-            $crud->set_table("encuesta_view");
-            $crud->set_primary_key('id');
+            $crud->set_table("tb_empresas");
             $crud->set_subject( $titulo );
 
-            $crud->display_as( 'id' , 'ID' );
-            $crud->display_as( 'cedula' , 'C.I' );
-            $crud->display_as( 'user' , 'Usuario' );
-            $crud->display_as( 'primer_nombre' , 'Primer nombre' );
-            $crud->display_as( 'segundo_nombre' , 'Segundo nombre' );
-            $crud->display_as( 'primer_apellido' , 'Primer apellido' );
-            $crud->display_as( 'segundo_apellido' , 'Segundo apellido' );
-            $crud->display_as( 'sector_vota' , 'Parroquia' );
-            $crud->display_as( 'email' , 'E-mail' );
-            $crud->display_as( 'celular' , 'Movil' );
-            $crud->display_as( 'rango_edad' , 'Rango de edad' );
-            $crud->display_as( 'sexo' , 'Sexo' );
-            //$crud->display_as( 'ocupacion' , 'Ocupación' );
+            $crud->display_as( 'razon_social' , 'Razón Social' );
             $crud->display_as( 'direccion' , 'Dirección' );
-            $crud->display_as( 'num_encuesta' , '# Encuesta' );
-            $crud->display_as( 'tipo_vivienda' , 'Tipo de Vivienda' );
-            $crud->display_as( 'estado_laboral' , 'Situación laboral' );
-            $crud->display_as( 'quiere_casa' , '¿Quiere casa propia?' );
-            $crud->display_as( 'origen' , 'Origen' );
-           
+            $crud->display_as( 'ruc' , 'RUC' );
+            $crud->display_as( 'telefono' , 'Teléfono' );
+            $crud->display_as( 'logo' , 'Logo' );
+            $crud->display_as( 'estado' , 'Estado' );
 
-            //$crud->unset_export();
-            //$crud->unset_print();
-            $crud->unset_add();
-            $crud->unset_edit();
-            $crud->unset_delete();
+            $crud->set_field_upload('logo', 'assets/uploads/empresas/logos');
+
+            $crud->field_type('estado', 'dropdown', array(
+                'I' => 'Inactivo',
+                'A' => 'Activo',
+            ));
+
+            $crud->columns( 'razon_social', 'direccion', 'ruc', 'telefono', 'logo', 'estado' );
+            $crud->fields( 'razon_social', 'direccion', 'ruc', 'telefono', 'logo', 'estado' );
+            $crud->required_fields( 'razon_social', 'direccion', 'ruc', 'telefono', 'logo', 'estado' );
+
+            $crud->unset_export();
+            $crud->unset_clone();
+            $crud->unset_read();
+            $crud->unset_print();
 
             $output = $crud->render();
 
@@ -342,127 +301,339 @@ class Backend extends CI_Controller {
         }
     }
 
+    public function productos(){
+        $debug = false;
 
+        if ($this->securityCheck()) {
+            $titulo = "Productos";
+            
+            $crud = new grocery_CRUD();
+            $crud->set_table("tb_productos");
+            $crud->set_subject( $titulo );
 
+            $crud->display_as( 'id_empresa', 'Empresa' );
+            $crud->display_as( 'descripcion', 'Descripción' );
+            $crud->display_as( 'id_categoria', 'Categoria' );
+            $crud->display_as( 'precio_vta', 'Precio Venta' );
+            $crud->display_as( 'costo', 'Costo' );
+            $crud->display_as( 'por_promocion', 'Por Promoción' );
+            $crud->display_as( 'estado', 'Estado' );
+            $crud->display_as( 'destacado', 'Destacado' );
+            $crud->display_as( 'usr_ingreso', 'Usuario Ingreso' );
+            $crud->display_as( 'fec_ingreso', 'Fecha Ingreso' );
+            $crud->display_as( 'stock', 'Stock' );
 
-/////:::::SLUGIFEANDO - url amigable:::::::::::////////
-    public function slugify($text)
-        { 
-      // replace non letter or digits by -
-          $text = preg_replace('~[^\\pL\d]+~u', '-', $text);
+            $crud->field_type('destacado', 'dropdown', array(
+                'S' => 'Sí',
+                'N' => 'No',
+            ));
+            $crud->field_type('estado', 'dropdown', array(
+                'I' => 'Inactivo',
+                'A' => 'Activo',
+            ));
 
-      // trim
-          $text = trim($text, '-');
+            $crud->set_relation('id_empresa', 'tb_empresas', 'razon_social');
+            $crud->set_relation('id_categoria', 'tb_categorias', 'descripcion');
 
-      // transliterate
-          $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
+            $crud->columns( 'id_empresa', 'descripcion', 'id_categoria', 'precio_vta', 'costo', 'por_promocion', 'estado', 'destacado', 'usr_ingreso', 'fec_ingreso', 'stock' );
+            $crud->fields( 'id_empresa', 'descripcion', 'id_categoria', 'precio_vta', 'costo', 'por_promocion', 'estado', 'destacado', 'usr_ingreso', 'fec_ingreso', 'stock' );
+            $crud->required_fields( 'id_empresa', 'descripcion', 'id_categoria', 'precio_vta', 'costo', 'por_promocion', 'estado', 'destacado', 'usr_ingreso', 'fec_ingreso', 'stock' );
 
-      // lowercase
-          $text = strtolower($text);
+            $crud->unset_export();
+            $crud->unset_clone();
+            $crud->unset_read();
+            $crud->unset_print();
 
-      // remove unwanted characters
-          $text = preg_replace('~[^-\w]+~', '', $text);
+            $output = $crud->render();
 
-          if (empty($text))
-          {
-            return 'n-a';
+            $dataHeader['titlePage'] = $titulo;
+            $dataHeader['css_files'] = $output->css_files;
+            $dataFooter['js_files'] = $output->js_files;
+
+            
+            $data['header'] = $this->load->view('backend/header', $dataHeader);
+            $data['menu'] = $this->load->view('backend/menu-admin', $dataHeader );
+
+            $data['content'] = $this->load->view('backend/blank', $output);
+            $data['footer'] = $this->load->view('backend/footer-grocerycrud', $dataFooter);
+        } else {
+            redirect("backend/logout");
         }
-
-        return $text;
     }
-    function insert_slug_callback($post_array)
-    {
-        $slug=$post_array['slug'];
-        //$titulo=$post_array['nombre'];
-     //$id=$post_array['id_categoria'];
-     $titulo="a";
-     $slug="".$titulo;
-     $post_array['slug'] = $this->slugify($slug);
-     $post_array['slug'] = $this->slugify($post_array['slug']);
-        // $this->db->insert('slug',$slug);
 
-        return true;
+    public function descuentos(){
+        $debug = false;
+
+        if ($this->securityCheck()) {
+            $titulo = "Producto";
+            
+            $crud = new grocery_CRUD();
+            $crud->set_table("tb_tabla_descto");
+            $crud->set_subject( $titulo );
+
+            $crud->display_as( 'rango_desde', 'Rango desde' );
+            $crud->display_as( 'rango_hasta', 'Rango Hasta' );
+            $crud->display_as( 'porcentaje', 'Porcentaje' );
+            $crud->display_as( 'estado', 'Estado' );
+            $crud->display_as( 'usr_ingreso', 'Usuario Ingreso' );
+            $crud->display_as( 'fec_ingreso', 'Fecha Ingreso' );
+            $crud->display_as( 'id_empresa', 'Empresa' );
+
+            
+            $crud->field_type('estado', 'dropdown', array(
+                'I' => 'Inactivo',
+                'A' => 'Activo',
+            ));
+
+            $crud->set_relation('id_empresa', 'tb_empresas', 'razon_social');
+
+            $crud->columns( 'rango_desde', 'rango_hasta', 'porcentaje', 'estado', 'usr_ingreso', 'fec_ingreso', 'id_empresa' );
+            $crud->fields( 'rango_desde', 'rango_hasta', 'porcentaje', 'estado', 'usr_ingreso', 'fec_ingreso', 'id_empresa' );
+            $crud->required_fields( 'rango_desde', 'rango_hasta', 'porcentaje', 'estado', 'usr_ingreso', 'fec_ingreso' );
+
+            $crud->unset_export();
+            $crud->unset_clone();
+            $crud->unset_read();
+            $crud->unset_print();
+
+            $output = $crud->render();
+
+            $dataHeader['titlePage'] = $titulo;
+            $dataHeader['css_files'] = $output->css_files;
+            $dataFooter['js_files'] = $output->js_files;
+
+            
+            $data['header'] = $this->load->view('backend/header', $dataHeader);
+            $data['menu'] = $this->load->view('backend/menu-admin', $dataHeader );
+
+            $data['content'] = $this->load->view('backend/blank', $output);
+            $data['footer'] = $this->load->view('backend/footer-grocerycrud', $dataFooter);
+        } else {
+            redirect("backend/logout");
+        }
     }
-    function create_slug_callback($post_array) {
-      // $this->load->library('encrypt');
-      // $key = 'super-secret-key';
-     $titulo=$post_array['nombre'];
-     $id=$post_array['id_categoria'];
-     $slug=$id."/".$titulo;
-     // $slug=$titulo.strval($id);
-     $post_array['slug'] = $this->slugify($slug);
-     $post_array['slug'] = $this->slugify($post_array['slug']);
 
-     return $post_array;
-    } 
-    function update_slug_callback($post_array) {
-      // $this->load->library('encrypt');
-      // $key = 'super-secret-key';
-     $titulo=$post_array['nombre'];
-     $id=$post_array['id_categoria'];
-     $slug=$id."/".$titulo;
-     $post_array['slug'] = $this->slugify($slug);
-     $post_array['slug'] = $this->slugify($post_array['slug']);
+    public function zonas(){
+        $debug = false;
 
-     return $post_array;
-    } 
+        if ($this->securityCheck()) {
+            $titulo = "Zona";
+            
+            $crud = new grocery_CRUD();
+            $crud->set_table("tb_zonas");
+            $crud->set_subject( $titulo );
 
+            $crud->display_as( 'descripcion', 'Descripción' );
+            $crud->display_as( 'estado', 'Estado' );
+            $crud->display_as( 'usr_ingreso', 'Usuario Ingreso' );
+            $crud->display_as( 'fec_ingreso', 'Fecha Ingreso' );
 
-    ///////////////////////
-    // Slug dinámico
-    ///////////////////////
-    
-    function create_slug_dinamico_callback($post_array) {
-        $id=$post_array['id_dinamico'];
-        $titulo=$post_array['titulo'];
-        $slug=strval($id)."-".$titulo;
-        $post_array['slug'] = $this->slugify($slug);
-        $post_array['slug'] = $this->slugify($post_array['slug']);
+            
+            $crud->field_type('estado', 'dropdown', array(
+                'I' => 'Inactivo',
+                'A' => 'Activo',
+            ));
 
-        return $post_array;
+            $crud->columns( 'descripcion', 'estado', 'usr_ingreso', 'fec_ingreso' );
+            $crud->fields( 'descripcion', 'estado', 'usr_ingreso', 'fec_ingreso' );
+            $crud->required_fields( 'descripcion', 'estado', 'usr_ingreso', 'fec_ingreso' );
+
+            $crud->unset_export();
+            $crud->unset_clone();
+            $crud->unset_read();
+            $crud->unset_print();
+
+            $output = $crud->render();
+
+            $dataHeader['titlePage'] = $titulo;
+            $dataHeader['css_files'] = $output->css_files;
+            $dataFooter['js_files'] = $output->js_files;
+
+            
+            $data['header'] = $this->load->view('backend/header', $dataHeader);
+            $data['menu'] = $this->load->view('backend/menu-admin', $dataHeader );
+
+            $data['content'] = $this->load->view('backend/blank', $output);
+            $data['footer'] = $this->load->view('backend/footer-grocerycrud', $dataFooter);
+        } else {
+            redirect("backend/logout");
+        }
     }
-    function insert_slug_dinamico_callback($post_array)
-    {
-        $idInsertado = $this->db->insert_id();
-        $titulo=$post_array['titulo'];
-        $slug=strval($idInsertado)."-".$titulo;
 
-        $post_array['id_dinamico'] = $idInsertado;
-        $post_array['slug'] = $this->slugify($slug);
-        $post_array['slug'] = $this->slugify($post_array['slug']);
+    //////////////////////////////////////////////////////////////
+    // Pedidos
+    //////////////////////////////////////////////////////////////
 
-        $data = array(
-           'slug' => $post_array['slug']
-        );
+    public function pedidos(){
+        $debug = false;
 
-        $this->db->update('dinamico', $data, array('id_dinamico' => $idInsertado) ); 
+        if ($this->securityCheck()) {
+            $titulo = "Pedido";
+            
+            $crud = new grocery_CRUD();
+            $crud->set_table("tb_pedidos");
+            $crud->set_subject( $titulo );
 
-        return true;
+            $crud->display_as( 'fecha', 'Fecha' );
+            $crud->display_as( 'id_vendedor', 'Vendedor' );
+            $crud->display_as( 'id_cliente', 'cliente' );
+            $crud->display_as( 'subtotal', 'Subtotal' );
+            $crud->display_as( 'descuento', 'Descuento' );
+            $crud->display_as( 'impuesto', 'Impuesto' );
+            $crud->display_as( 'total', 'Total' );
+            $crud->display_as( 'porc_descto', 'Porcentaje Descuento' );
+            $crud->display_as( 'comentario', 'Comentario' );
+            $crud->display_as( 'estado', 'Estado' );
+            $crud->display_as( 'fecha_estado', 'Fecha Estado' );
+
+            $crud->set_relation('id_vendedor', 'tb_vendedores', 'nombres');
+            $crud->set_relation('id_cliente', 'tb_clientes', 'razon_social');
+
+            $crud->field_type('estado', 'dropdown', array(
+                'I' => 'Impago',
+                'P' => 'Pagado',
+            ));
+
+            $crud->columns( 'fecha', 'id_vendedor', 'id_cliente', 'subtotal', 'descuento', 'impuesto', 'total', 'porc_descto', 'comentario', 'estado', 'fecha_estado' );
+            $crud->fields( 'fecha', 'id_vendedor', 'id_cliente', 'subtotal', 'descuento', 'impuesto', 'total', 'porc_descto', 'comentario', 'estado', 'fecha_estado' );
+            $crud->required_fields( 'fecha', 'id_vendedor', 'id_cliente', 'subtotal', 'descuento', 'impuesto', 'total', 'porc_descto',  'estado', 'fecha_estado' );
+
+            $crud->unset_export();
+            $crud->unset_clone();
+            $crud->unset_read();
+            $crud->unset_print();
+            //$crud->unset_texteditor('descripcion','full_text');
+
+            $output = $crud->render();
+
+            $dataHeader['titlePage'] = $titulo;
+            $dataHeader['css_files'] = $output->css_files;
+            $dataFooter['js_files'] = $output->js_files;
+
+            
+            $data['header'] = $this->load->view('backend/header', $dataHeader);
+            $data['menu'] = $this->load->view('backend/menu-admin', $dataHeader );
+
+            $data['content'] = $this->load->view('backend/blank', $output);
+            $data['footer'] = $this->load->view('backend/footer-grocerycrud', $dataFooter);
+        } else {
+            redirect("backend/logout");
+        }
     }
-    function update_slug_dinamico_callback($post_array) {
-        $id=$post_array['id_dinamico'];
-        $titulo=$post_array['titulo'];
-        $slug=strval($id)."-".$titulo;
-        $post_array['slug'] = $this->slugify($slug);
-        $post_array['slug'] = $this->slugify($post_array['slug']);
 
-        return $post_array;
-    } 
+    public function detalle_pedido(){
+        $debug = false;
 
+        if ($this->securityCheck()) {
+            $titulo = "Pedido Detalle";
+            
+            $crud = new grocery_CRUD();
+            $crud->set_table("tb_pedidos_det");
+            $crud->set_subject( $titulo );
 
-/////:::::SLUGIFEANDO - url amigable:::::::::::////////
+            $crud->display_as( 'id_pedido', 'Pedido' );
+            $crud->display_as( 'secuencial', 'secuencial' );
+            $crud->display_as( 'id_producto', 'Producto' );
+            $crud->display_as( 'cantidad', 'Cantidad' );
+            $crud->display_as( 'por_promocion', 'Por Promoción' );
+            $crud->display_as( 'precio_vta', 'Precio de Venta' );
 
+            $crud->set_relation('id_pedido', 'tb_pedidos', 'id_pedido');
+            $crud->set_relation('id_producto', 'tb_productos', 'descripcion');
 
+            $crud->field_type('estado', 'dropdown', array(
+                'I' => 'Impago',
+                'P' => 'Pagado',
+            ));
 
+            $crud->columns( 'id_pedido', 'secuencial', 'id_producto', 'cantidad', 'por_promocion', 'precio_vta' );
+            $crud->fields( 'id_pedido', 'secuencial', 'id_producto', 'cantidad', 'por_promocion', 'precio_vta' );
+            $crud->required_fields( 'id_pedido', 'secuencial', 'id_producto', 'cantidad', 'por_promocion', 'precio_vta' );
+
+            $crud->unset_export();
+            $crud->unset_clone();
+            $crud->unset_read();
+            $crud->unset_print();
+            //$crud->unset_texteditor('descripcion','full_text');
+
+            $output = $crud->render();
+
+            $dataHeader['titlePage'] = $titulo;
+            $dataHeader['css_files'] = $output->css_files;
+            $dataFooter['js_files'] = $output->js_files;
+
+            
+            $data['header'] = $this->load->view('backend/header', $dataHeader);
+            $data['menu'] = $this->load->view('backend/menu-admin', $dataHeader );
+
+            $data['content'] = $this->load->view('backend/blank', $output);
+            $data['footer'] = $this->load->view('backend/footer-grocerycrud', $dataFooter);
+        } else {
+            redirect("backend/logout");
+        }
+    }
 
 
 
     //////////////////////////////////////////////////////////////
-    // Controladores
+    // Personal
     //////////////////////////////////////////////////////////////
-
     
+    public function vendedores(){
+        $debug = false;
 
+        if ($this->securityCheck()) {
+            $titulo = "Vendedor";
+            
+            $crud = new grocery_CRUD();
+            $crud->set_table("tb_vendedores");
+            $crud->set_subject( $titulo );
+
+            $crud->display_as( 'nombres', 'Nombres' );
+            $crud->display_as( 'cedula', 'Cédula' );
+            $crud->display_as( 'direccion', 'Dirección' );
+            $crud->display_as( 'id_zona', 'Zona' );
+            $crud->display_as( 'costo', 'Costo' );
+            $crud->display_as( 'estado', 'Estado' );
+            $crud->display_as( 'destacado', 'Destacado' );
+            $crud->display_as( 'usr_ingreso', 'Usuario Ingreso' );
+            $crud->display_as( 'fec_ingreso', 'Fecha Ingreso' );
+            $crud->display_as( 'id_empresa', 'Empresa' );
+            $crud->display_as( 'iniciales', 'Iniciales' );
+
+            $crud->field_type('estado', 'dropdown', array(
+                'I' => 'Inactivo',
+                'A' => 'Activo',
+            ));
+
+            $crud->set_relation('id_empresa', 'tb_empresas', 'razon_social');
+            $crud->set_relation('id_zona', 'tb_zonas', 'descripcion');
+
+            $crud->columns( 'nombres', 'cedula', 'direccion', 'id_zona', 'costo', 'estado', 'destacado', 'usr_ingreso', 'fec_ingreso', 'id_empresa', 'iniciales' );
+            $crud->fields( 'nombres', 'cedula', 'direccion', 'id_zona', 'costo', 'estado', 'destacado', 'usr_ingreso', 'fec_ingreso', 'id_empresa', 'iniciales' );
+            $crud->required_fields( 'nombres', 'cedula', 'direccion', 'id_zona', 'costo', 'estado', 'destacado', 'usr_ingreso', 'fec_ingreso', 'id_empresa', 'iniciales' );
+
+            $crud->unset_export();
+            $crud->unset_clone();
+            $crud->unset_read();
+            $crud->unset_print();
+
+            $output = $crud->render();
+
+            $dataHeader['titlePage'] = $titulo;
+            $dataHeader['css_files'] = $output->css_files;
+            $dataFooter['js_files'] = $output->js_files;
+
+            
+            $data['header'] = $this->load->view('backend/header', $dataHeader);
+            $data['menu'] = $this->load->view('backend/menu-admin', $dataHeader );
+
+            $data['content'] = $this->load->view('backend/blank', $output);
+            $data['footer'] = $this->load->view('backend/footer-grocerycrud', $dataFooter);
+        } else {
+            redirect("backend/logout");
+        }
+    }
 
 }
 

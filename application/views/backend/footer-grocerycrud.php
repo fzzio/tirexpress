@@ -16,7 +16,7 @@
 
         
         <!-- Custom Theme JavaScript -->
-        <script type="text/javascript" src="<?php echo base_url('public/assets/js/sb-admin-2.js'); ?>"></script>
-        <script type="text/javascript" src="<?php echo base_url('public/assets/js/script-admin.js'); ?>"></script>
+        <script type="text/javascript" src="<?php echo base_url('assets/tirexpress/js/sb-admin-2.js'); ?>"></script>
+        <script type="text/javascript" src="<?php echo base_url('assets/tirexpress/js/script-admin.js'); ?>"></script>
     </body>
 </html>

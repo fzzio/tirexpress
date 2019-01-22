@@ -61,30 +61,67 @@
                         </a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a href="<?php echo site_url('backend/usuario'); ?>">
-                                    Auth
+                                <a href="<?php echo site_url('backend/categorias'); ?>">
+                                    Categorias
                                 </a>
                             </li>
                             <li>
-                                <a href="<?php echo site_url('backend/encuesta'); ?>">
-                                    Encuestas
+                                <a href="<?php echo site_url('backend/ciudades'); ?>">
+                                    Ciudades
                                 </a>
                             </li>
                             <li>
-                                <a href="<?php echo site_url('backend/listado_encuestados'); ?>">
-                                    Encuestados
+                                <a href="<?php echo site_url('backend/clientes'); ?>">
+                                    Clientes
+                                </a>
+                            </li>
+                            <li>
+                                <a href="<?php echo site_url('backend/empresas'); ?>">
+                                    Empresas
+                                </a>
+                            </li>
+                            <li>
+                                <a href="<?php echo site_url('backend/productos'); ?>">
+                                    Productos
+                                </a>
+                            </li>
+                            <li>
+                                <a href="<?php echo site_url('backend/descuentos'); ?>">
+                                    Descuentos
+                                </a>
+                            </li>
+                            <li>
+                                <a href="<?php echo site_url('backend/zonas'); ?>">
+                                    Zonas
                                 </a>
                             </li>
                         </ul>
                     </li>
                     <li>
                         <a href="#">
-                            <i class="fa fa-wpforms"></i> Reportes<span class="fa arrow"></span>
+                            <i class="fa fa-wpforms"></i> Pedido<span class="fa arrow"></span>
                         </a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a href="<?php echo site_url('backend/total_encuestas'); ?>">
-                                    Encuestas totales
+                                <a href="<?php echo site_url('backend/pedidos'); ?>">
+                                    Pedidos
+                                </a>
+                            </li>
+                            <li>
+                                <a href="<?php echo site_url('backend/detalle_pedido'); ?>">
+                                    Detalle pedido
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-user"></i> Personal<span class="fa arrow"></span>
+                        </a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="<?php echo site_url('backend/vendedores'); ?>">
+                                    Vendedores
                                 </a>
                             </li>
                         </ul>
