@@ -83,3 +83,22 @@ defined('EXIT_USER_INPUT')     OR define('EXIT_USER_INPUT', 7); // invalid user 
 defined('EXIT_DATABASE')       OR define('EXIT_DATABASE', 8); // database error
 defined('EXIT__AUTO_MIN')      OR define('EXIT__AUTO_MIN', 9); // lowest automatically-assigned error code
 defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest automatically-assigned error code
+
+// Constantes del Proyecto
+defined('PROYECTO_NOMBRE')			OR define('PROYECTO_NOMBRE', 'Tirexpress'); // Nombre
+defined('PROYECTO_AUTOR')			OR define('PROYECTO_AUTOR', 'Félix Chavez y Emily Alcivar'); // Autor
+defined('PROYECTO_DESARROLLADOR')	OR define('PROYECTO_DESARROLLADOR', 'Bases de Datos'); // Desarrollador
+defined('PROYECTO_DESARROLLADOR_LINK')	OR define('PROYECTO_DESARROLLADOR_LINK', 'http://www.espol.edu.ec'); // Desarrollador
+
+// Manejo de estados
+defined('ESTADO_INACTIVO')		OR define('ESTADO_INACTIVO', 0);
+defined('ESTADO_ACTIVO')		OR define('ESTADO_ACTIVO', 1);
+
+// Manejo de habilitados
+defined('ESTADO_INHABILITADO')		OR define('ESTADO_INHABILITADO', 0);
+defined('ESTADO_HABILITADO')		OR define('ESTADO_HABILITADO', 1);
+
+// Manejo de estados en JSON de respuestas
+defined('RESPUESTA_ERROR')	OR define('RESPUESTA_ERROR', 0);
+defined('RESPUESTA_OK')		OR define('RESPUESTA_OK', 1);
+
